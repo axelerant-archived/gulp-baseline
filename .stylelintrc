@@ -1,0 +1,4 @@
+{
+  "ignoreFiles": "./build/*.css",
+  "extends": "stylelint-config-axelerant"
+}
