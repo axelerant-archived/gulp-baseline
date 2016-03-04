@@ -28,6 +28,10 @@
     js: {
       input: 'js/**/*.js',
       output: './build',
+    },
+    babel: {
+      input: 'js/**/*.es6.js',
+      output: './build',
       options: {
         presets: ['es2015']
       }
@@ -50,7 +54,7 @@
   };
 
 gulp.task('eslint', function() {
-  return gulp.src([config.js.input])
+  return gulp.src([config.js.input, config.babel.input])
   .pipe(eslint())
   .pipe(eslint.format())
   .pipe(eslint.failAfterError());
@@ -88,16 +92,29 @@ gulp.task('sass:prod', function() {
 gulp.task('js:dev', function() {
   return gulp.src([config.js.input])
   .pipe(sourcemaps.init())
-  .pipe(babel(config.js.options))
   .pipe(gulp.dest(config.js.output))
   .pipe(reload({stream: true}));
 });
 
 gulp.task('js:prod', function() {
   return gulp.src([config.js.input])
-  .pipe(babel(config.js.options))
   .pipe(uglify())
   .pipe(gulp.dest(config.js.output));
+});
+
+gulp.task('babel:dev', function() {
+  return gulp.src([config.babel.input])
+  .pipe(sourcemaps.init())
+  .pipe(babel(config.babel.options))
+  .pipe(gulp.dest(config.babel.output))
+  .pipe(reload({stream: true}));
+});
+
+gulp.task('babel:prod', function() {
+  return gulp.src([config.babel.input])
+  .pipe(babel(config.babel.options))
+  .pipe(uglify())
+  .pipe(gulp.dest(config.babel.output));
 });
 
 gulp.task('images', function() {
@@ -106,7 +123,7 @@ gulp.task('images', function() {
 });
 
 gulp.task('prod', function() {
-  gulp.start(['sass:prod', 'js:prod', 'lint', 'images']);
+  gulp.start(['sass:prod', 'js:prod', 'babel:prod', 'lint', 'images']);
 });
 
 gulp.task('watch', function() {
@@ -117,4 +134,5 @@ gulp.task('watch', function() {
   }
   gulp.watch(config.sass.input, ['sass:dev', 'stylelint']).on('change', reload);
   gulp.watch(config.js.input, ['js:dev', 'eslint']).on('change', reload);
+  gulp.watch(config.babel.input, ['babel:dev', 'eslint']).on('change', reload);
 });
