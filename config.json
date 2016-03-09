@@ -1,0 +1,43 @@
+{
+  "sass": {
+    "input": "sass\/**\/*.scss",
+    "output": ".\/build",
+    "options": {
+      "dev": {
+        "errLogToConsole": true,
+        "outputStyle": "expanded"
+      },
+      "prod": {
+        "outputStyle": "compressed"
+      }
+    }
+  },
+  "js": {
+    "input": "js\/**\/*.js",
+    "output": ".\/build"
+  },
+  "babel": {
+    "input": "js\/**\/*.es6.js",
+    "output": ".\/build",
+    "options": {
+      "presets": [
+        "es2015"
+      ]
+    }
+  },
+  "img": {
+    "input": "img\/**\/*.*",
+    "output": ".\/build\/img",
+    "options": {
+      "optimizationLevel": 3,
+      "progressive": true,
+      "interlaced": true
+    }
+  },
+  "autoprefixer": {
+    "browsers": [
+      "last 2 versions",
+      "> 5%"
+    ]
+  }
+}
